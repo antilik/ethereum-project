@@ -58,4 +58,32 @@ describe('Campaign', () => {
     const isContributor = await campaign.methods.approvers(contributor).call();
     assert(isContributor);
   });
+
+  it('should be contribution sum more than minimum', async () => {
+    const contributor = accounts[1];
+    try {
+      await campaign.methods.contribute().send({
+        value: '88',
+        from: contributor,
+      })
+      assert(false);
+    } catch(e) {
+      assert(e);
+    }
+  });
+
+  it('should manager have ability to create a request', async () => {
+    const value = '100'
+    const description = 'Buy solar panels';
+    const recipient = accounts[1];
+
+    await campaign.methods.createRequest(description, value, recipient).send({
+      from: managerAccount,
+      gas: '1000000',
+    })
+    const request = await campaign.methods.requests(0).call();
+    assert.equal(request.value, value);
+    assert.equal(request.description, description);
+    assert.equal(request.recipient, recipient);
+  });
 });
