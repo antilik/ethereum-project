@@ -86,4 +86,42 @@ describe('Campaign', () => {
     assert.equal(request.description, description);
     assert.equal(request.recipient, recipient);
   });
+
+  it('should process requests from manager', async () => {
+    const recipient = accounts[1];
+    const getBalanceOfRecipient = async () => {
+      let balance = await web3.eth.getBalance(recipient);
+      balance = web3.utils.fromWei(balance, 'ether');
+      balance = parseFloat(balance);
+
+      return balance;
+    };
+    const initialBalance = await getBalanceOfRecipient();
+
+    await campaign.methods.contribute().send({
+      from: managerAccount,
+      value: web3.utils.toWei('6', 'ether'),
+    });
+
+    await campaign.methods.createRequest('Buy tables', web3.utils.toWei('3', 'ether'), recipient)
+      .send({
+      from: managerAccount,
+        gas: '1000000',
+    });
+
+    await campaign.methods.approveRequest(0)
+      .send({
+        from: managerAccount,
+        gas: '1000000',
+      });
+
+    await campaign.methods.finalizeRequest(0).send({
+      from: managerAccount,
+      gas: '1000000',
+    });
+
+    const totalBalance = await getBalanceOfRecipient();
+
+    assert(totalBalance > initialBalance);
+  });
 });
