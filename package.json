@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
+    "deploy": "node ./ethereum/deploy.js",
     "compile": "node ./ethereum/compile.js"
   },
   "author": "Anton Degnera",
@@ -16,5 +17,8 @@
     "mocha": "^10.4.0",
     "solc": "^0.4.17",
     "web3": "^4.9.0"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.7"
   }
 }
