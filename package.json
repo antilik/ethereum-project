@@ -6,6 +6,7 @@
   "scripts": {
     "test": "mocha",
     "deploy": "node ./ethereum/deploy.js",
+    "dev": "next dev",
     "compile": "node ./ethereum/compile.js"
   },
   "author": "Anton Degnera",
@@ -15,6 +16,9 @@
     "fs-extra": "^11.2.0",
     "ganache": "^7.9.2",
     "mocha": "^10.4.0",
+    "next": "^12.3.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "solc": "^0.4.17",
     "web3": "^4.9.0"
   },
