@@ -1,8 +1,21 @@
-import React from 'react';
+import factory from '../ethereum/factory';
 
-const MainPage = () => {
+export const getServerSideProps = (async () => {
+  const deployedCampaigns = await factory.methods.getDeployedCampaigns().call();
+  return { props: { deployedCampaigns } }
+});
+
+const MainPage = ({ deployedCampaigns }) => {
+
   return (
-    <h1>This is the Main page</h1>
+    <>
+      {deployedCampaigns.length > 0 ? (
+        <h1>The contract was deployed to address: {deployedCampaigns?.[0]}</h1>
+      ) : (
+        <h1>There is no deployed contract.</h1>
+      )}
+    </>
+
   );
 };
 
