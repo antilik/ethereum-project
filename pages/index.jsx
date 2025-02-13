@@ -3,6 +3,7 @@ import { Card, Button } from 'semantic-ui-react';
 
 import factory from '../ethereum/factory';
 import Layout from '../components/Layout';
+import Link from "next/link";
 
 export const getServerSideProps = (async () => {
   const deployedCampaigns = await factory.methods.getDeployedCampaigns().call();
@@ -13,7 +14,11 @@ const MainPage = ({ deployedCampaigns }) => {
   const items = deployedCampaigns?.map((address) => {
     return {
       header: address,
-      description: <a>View Campaign</a>,
+      description: (
+        <Link href={`/campaigns/${address}`}>
+          <a>View Campaign</a>
+        </Link>
+      ),
       fluid: true,
     }
   });
@@ -23,12 +28,15 @@ const MainPage = ({ deployedCampaigns }) => {
       {deployedCampaigns.length > 0 ? (
         <div>
           <h3>Open Campaign</h3>
-          <Button
-            floated="right"
-            primary
-            content="Create Campaign"
-            icon="plus square outline"
-          />
+          <Link href="/campaigns/new">
+            <Button
+              floated="right"
+              primary
+              content="Create Campaign"
+              icon="plus square outline"
+            />
+          </Link>
+
           <Card.Group items={items} />
         </div>
       ) : (

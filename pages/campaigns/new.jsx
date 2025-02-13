@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Form, Button, Input, Message } from 'semantic-ui-react';
+import { useRouter } from "next/router";
 
 import Layout from '../../components/Layout';
 // web3 components
@@ -11,6 +12,8 @@ const CampaignNew = () => {
   const [minimumContribution, setMinimumContribution] = useState(0);
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  const router = useRouter();
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -22,6 +25,7 @@ const CampaignNew = () => {
         .send({
           from:accounts[0],
         });
+      router.push('/');
     } catch (err) {
       setErrorMessage(err.message);
     } finally {
