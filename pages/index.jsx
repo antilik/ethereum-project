@@ -1,9 +1,8 @@
-import React from 'react';
-import { Card, Button } from 'semantic-ui-react';
-
-import factory from '../ethereum/factory';
-import Layout from '../components/Layout';
 import Link from "next/link";
+import { Card, Button } from "semantic-ui-react";
+
+import factory from "../ethereum/factory";
+import Layout from "../components/Layout";
 
 export const getServerSideProps = (async () => {
   const deployedCampaigns = await factory.methods.getDeployedCampaigns().call();
@@ -20,27 +19,36 @@ const MainPage = ({ deployedCampaigns }) => {
         </Link>
       ),
       fluid: true,
+      style: { overflowWrap: 'break-word' },
     }
   });
+
+  const showCreateCampaignBtn = () => {
+    return (
+      <Link href="/campaigns/new">
+        <Button
+          floated="right"
+          primary
+          content="Create Campaign"
+          icon="plus square outline"
+        />
+      </Link>
+    );
+  };
 
   return (
     <Layout>
       {deployedCampaigns.length > 0 ? (
         <div>
           <h3>Open Campaign</h3>
-          <Link href="/campaigns/new">
-            <Button
-              floated="right"
-              primary
-              content="Create Campaign"
-              icon="plus square outline"
-            />
-          </Link>
-
+          {showCreateCampaignBtn()}
           <Card.Group items={items} />
         </div>
       ) : (
-        <h1>There is no deployed contract.</h1>
+        <>
+          <h1>There is no deployed contract.</h1>
+          {showCreateCampaignBtn()}
+        </>
       )}
     </Layout>
   );

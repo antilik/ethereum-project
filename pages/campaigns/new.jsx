@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { Form, Button, Input, Message } from 'semantic-ui-react';
+import React, { useState } from "react";
+import { Form, Button, Input, Message } from "semantic-ui-react";
 import { useRouter } from "next/router";
 
-import Layout from '../../components/Layout';
-// web3 components
-import factory from '../../ethereum/factory';
-import web3 from '../../ethereum/web3';
+import Layout from "../../components/Layout";
+
+import factory from "../../ethereum/factory";
+import web3 from "../../ethereum/web3";
 
 
 const CampaignNew = () => {
@@ -14,7 +14,12 @@ const CampaignNew = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
-  const handleSubmit = async (e) => {
+
+  const handleOnChange = (e) => {
+    setMinimumContribution(e.target.value);
+    errorMessage && setErrorMessage(''); // cleanup
+  };
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setErrorMessage(''); // cleanup
@@ -36,7 +41,10 @@ const CampaignNew = () => {
   return (
     <Layout>
       <h3>Create Campaign</h3>
-      <Form onSubmit={handleSubmit} error={!!errorMessage}>
+      <Form
+        onSubmit={handleOnSubmit}
+        error={!!errorMessage} // it should be stated. Otherwise, errorMessage will not appear
+      >
         <Form.Field>
           <label htmlFor="">Minimum Contribution</label>
           <Input
@@ -44,14 +52,18 @@ const CampaignNew = () => {
             labelPosition="right"
             min="0"
             value={minimumContribution}
-            onChange={(e) => {
-              setMinimumContribution(e.target.value);
-              errorMessage && setErrorMessage(''); // cleanup
-            }}
+            onChange={handleOnChange}
           />
         </Form.Field>
-        <Message error header="Error" content={errorMessage}/>
-        <Button primary loading={isLoading}>Create</Button>
+        <Message
+          error
+          header="Error"
+          content={errorMessage}
+        />
+        <Button
+          primary
+          loading={isLoading}
+        >Create</Button>
       </Form>
     </Layout>
   )
