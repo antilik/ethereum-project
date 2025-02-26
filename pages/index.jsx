@@ -14,7 +14,7 @@ const MainPage = ({ deployedCampaigns }) => {
     return {
       header: address,
       description: (
-        <Link href={`/campaigns/${address}`}>
+        <Link href={`/campaigns/${address}`} legacyBehavior>
           <a>View Campaign</a>
         </Link>
       ),
